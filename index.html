@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPEMAS - Sistem Pemantauan SK Biro Hukum Gubernur</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #60a5fa;
+            --light-blue: #dbeafe;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Login Page */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 50%, var(--primary-blue) 100%);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .login-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .login-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--gray-500);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--white);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(30,64,175,0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            padding: 2.5rem 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-logo i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .sidebar-logo h3 {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .user-info h4 {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-role {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+
+        .nav-menu {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 2rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-left-color: var(--secondary-blue);
+            transform: translateX(4px);
+        }
+
+        .nav-item i {
+            width: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Burger Button */
+        .burger-btn {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 1001;
+            background: var(--primary-blue);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            width: 56px;
+            height: 56px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .burger-btn:hover {
+            background: var(--secondary-blue);
+            transform: scale(1.05) rotate(90deg);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            padding: 2.5rem;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (min-width: 1400px) {
+            .main-content {
+                margin-left: 280px;
+                padding: 3rem;
+            }
+        }
+
+        /* Page */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .page-header {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--gray-100);
+        }
+
+        .page-header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-100);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-inner {
+            padding: 2.5rem;
+        }
+
+        /* IMPROVED DASHBOARD */
+        .dashboard-welcome {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            align-items: center;
+        }
+
+        .welcome-text h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .welcome-text p {
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 3rem 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+        }
+
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .stat-total { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); }
+        .stat-approved { background: linear-gradient(135deg, var(--success), #059669); }
+        .stat-pending { background: linear-gradient(135deg, var(--warning), #d97706); }
+        .stat-progress { background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue)); }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--gray-700);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .recent-activity {
+            margin-top: 3rem;
+        }
+
+        .activity-card {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .activity-list {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-100);
+            overflow: hidden;
+        }
+
+        .activity-header {
+            padding: 2rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+        }
+
+        .activity-item {
+            padding: 1.75rem 2.5rem;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        /* Buttons */
+        .btn-small {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary { background: var(--secondary-blue); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-100);
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 1.5rem 1.25rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-partial { background: #dbeafe; color: var(--primary-blue); }
+
+        /* IMPROVED DOKUMEN FORM */
+        .dokumen-form {
+            background: var(--gray-50);
+            padding: 2.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border: 2px dashed var(--gray-300);
+            transition: all 0.3s ease;
+        }
+
+        .dokumen-form:hover {
+            border-color: var(--primary-blue);
+            background: var(--light-blue);
+        }
+
+        .dokumen-form.active {
+            border-color: var(--success);
+            background: rgba(16,185,129,0.1);
+        }
+
+        /* Approval System */
+        .approval-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+
+        .approval-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .approval-item.approved {
+            border-color: var(--success);
+            background: rgba(16,185,129,0.1);
+        }
+
+        .approval-role {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--gray-700);
+        }
+
+        .approval-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--success);
+        }
+
+        .approval-date {
+            font-size: 0.75rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        /* Search */
+        .search-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 14px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(30,64,175,0.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .page-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .card-inner {
+                padding: 2rem 1.5rem;
+            }
+            
+            .dashboard-welcome {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h1>Sistem Pemantauan SK</h1>
+                <p>Biro Hukum - Kantor Gubernur</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input type="text" id="username" placeholder="Masukkan username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-sign-in-alt"></i> Masuk ke Sistem
+                </button>
+                <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--gray-500);">
+                    Sistem Informasi Resmi Pemerintah Daerah
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="appContainer" class="app-container">
+        <!-- Burger Button -->
+        <button id="burgerBtn" class="burger-btn" title="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>SIPEMAS</h3>
+                </div>
+                <div class="user-avatar" id="userAvatar">P</div>
+                <div class="user-info">
+                    <h4 id="userName">Loading...</h4>
+                    <div id="userRole" class="user-role">Loading...</div>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profil</span>
+                </a>
+                <a href="#" class="nav-item" data-page="dokumen">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Dokumen Biro Hukum</span>
+                </a>
+                <a href="#" class="nav-item" data-page="pengajuan">
+                    <i class="fas fa-file-plus"></i>
+                    <span>Pengajuan & Approved SK</span>
+                </a>
+                <a href="#" class="nav-item" data-page="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main id="mainContent" class="main-content">
+            <!-- IMPROVED DASHBOARD -->
+            <div id="dashboard" class="page active">
+                <div class="page-header">
+                    <div class="dashboard-welcome">
+                        <div class="welcome-text">
+                            <h2>Selamat Datang, <strong id="welcomeUserName"></strong></h2>
+                            <p>Sistem Pemantauan Surat Keputusan Biro Hukum Gubernur Provinsi</p>
+                            <div style="margin-top: 1.5rem;">
+                                <span style="background: rgba(59,130,246,0.1); padding: 0.75rem 1.5rem; border-radius: 50px; color: var(--primary-blue); font-weight: 500; font-size: 0.95rem;">
+                                    <i class="fas fa-clock"></i> Terakhir update: <span id="lastUpdate"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 12rem; color: var(--gray-200); opacity: 0.3; line-height: 1;">📋</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card card">
+                        <div class="stat-icon stat-total">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <div class="stat-number" id="totalSK">0</div>
+                        <div class="stat-label">Total SK</div>
+                    </div>
+                    <div class="stat-card card">
+                        <div class="stat-icon stat-approved">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-number" id="approvedSK">0</div>
+                        <div class="stat-label">Approved</div>
+                    </div>
+                    <div class="stat-card card">
+                        <div class="stat-icon stat-pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number" id="pendingSK">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card card">
+                        <div class="stat-icon stat-progress">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div class="stat-number" id="progressSK">0</div>
+                        <div class="stat-label">Proses</div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <div class="activity-card">
+                        <div>
+                            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gray-900);">SK Perlu Perhatian</h3>
+                            <div class="activity-list">
+                                <div class="activity-header">
+                                    <h4 style="font-size: 1.1rem; font-weight: 600;">SK Menunggu Paraf Anda</h4>
+                                </div>
+                                <div id="activityItems">
+                                    <!-- Activity items will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card" style="padding: 2.5rem; text-align: center;">
+                            <i class="fas fa-chart-line" style="font-size: 4rem; color: var(--gray-300); margin-bottom: 1.5rem;"></i>
+                            <h4 style="font-size: 1.25rem; font-weight: 600; color: var(--gray-800); margin-bottom: 1rem;">Tingkat Efisiensi</h4>
+                            <div style="font-size: 2.5rem; font-weight: 700; color: var(--success);">92%</div>
+                            <p style="color: var(--gray-600); margin-top: 0.5rem;">Proses paraf bulan ini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMPLIFIED PROFILE -->
+            <div id="profile" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-user-circle"></i> Profil Pengguna</h1>
+                </div>
+                <div class="card">
+                    <div class="card-inner">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 2rem;">Informasi Akun</h3>
+                        <div id="profileContent" style="font-size: 1.1rem;">
+                            <!-- Profile data will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMPROVED DOKUMEN -->
+            <div id="dokumen" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-folder-open"></i> Dokumen Biro Hukum</h1>
+                    <p>Kelola arsip dokumen SK lama dan berkas hukum lainnya</p>
+                </div>
+                <div class="search-controls">
+                    <input type="text" id="searchDokumen" class="search-box" placeholder="🔍 Cari dokumen SK berdasarkan nomor atau judul...">
+                    <button id="addDokumenBtn" class="btn btn-success" style="padding: 14px 28px; font-size: 0.95rem;">
+                        <i class="fas fa-plus"></i> Tambah Dokumen
+                    </button>
+                </div>
+
+                <!-- IMPROVED DOKUMEN FORM -->
+                <div id="dokumenFormContainer" class="dokumen-form" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600;">
+                            <i class="fas fa-file-plus"></i> Tambah Dokumen Baru
+                        </h3>
+                        <button id="closeDokumenForm" class="btn" style="background: var(--gray-500); padding: 10px 20px;">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+                    <form id="dokumenForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nomor Dokumen</label>
+                                <input type="text" id="dokumenNomor" placeholder="Contoh: SK-LAMA-001/2025/HUKUM" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Judul Dokumen</label>
+                                <input type="text" id="dokumenJudul" placeholder="Masukkan judul lengkap dokumen" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Tanggal Masuk</label>
+                                <input type="date" id="dokumenTanggal" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Kategori</label>
+                                <select id="dokumenKategori" style="padding: 14px 18px; border: 2px solid var(--gray-200); border-radius: 12px;">
+                                    <option value="arsip">Arsip Resmi</option>
+                                    <option value="referensi">Referensi Hukum</option>
+                                    <option value="laporan">Laporan Tahunan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                            <button type="submit" class="btn btn-success" style="min-width: 140px;">
+                                <i class="fas fa-save"></i> Simpan Dokumen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nomor Dokumen</th>
+                                <th>Judul</th>
+                                <th>Tanggal</th>
+                                <th>Kategori</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dokumenTable">
+                            <!-- Dokumen data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pengajuan & Approved SK -->
+            <div id="pengajuan" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-file-signature"></i> Pengajuan & Approved SK</h1>
+                    <p>Kelola proses pengajuan, persetujuan, dan paraf SK secara lengkap</p>
+                </div>
+                <div class="search-controls">
+                    <input type="text" id="searchSK" class="search-box" placeholder="🔍 Cari SK berdasarkan nomor, judul, atau pemohon...">
+                    <button onclick="showPengajuanForm()" class="btn btn-success" style="padding: 14px 28px; font-size: 0.95rem;">
+                        <i class="fas fa-plus"></i> Ajukan SK Baru
+                    </button>
+                </div>
+
+                <!-- Pengajuan Form -->
+                <div id="pengajuanForm" class="card" style="display: none; margin-bottom: 2rem;">
+                    <div class="card-inner">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 2rem;">
+                            <i class="fas fa-file-plus"></i> Pengajuan SK Baru
+                        </h3>
+                        <form id="skForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Nomor Surat</label>
+                                    <input type="text" id="nomorSurat" placeholder="Contoh: SK-001/III/2026/HUKUM" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Judul Surat</label>
+                                    <input type="text" id="judulSurat" placeholder="Penunjukan Pejabat Eselon..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Pemohon</label>
+                                    <input type="text" id="pemohon" placeholder="Nama lengkap pemohon" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tanggal Pengajuan</label>
+                                    <input type="date" id="tanggalPengajuan" required>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                                <button type="submit" class="btn btn-success" style="min-width: 140px;">
+                                    <i class="fas fa-save"></i> Simpan Pengajuan
+                                </button>
+                                <button type="button" onclick="hidePengajuanForm()" class="btn" style="background: var(--gray-500); min-width: 100px;">
+                                    Batal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nomor Surat</th>
+                                <th>Judul Surat</th>
+                                <th>Pemohon</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="skTable">
+                            <!-- SK data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Detail SK</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="modalBody">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data pengguna resmi
+        const users = {
+            'pemrakarsa': { password: '123456', name: 'Pemrakarsa Hukum', role: 'Pemrakarsa' },
+            'asisten1': { password: '123456', name: 'Asisten I Bidang Hukum', role: 'Asisten 1' },
+            'sekda': { password: '123456', name: 'Sekretaris Daerah Provinsi', role: 'Sekda' },
+            'wagub': { password: '123456', name: 'Wakil Gubernur', role: 'Wagub' },
+            'gubernur': { password: '123456', name: 'Gubernur Provinsi', role: 'Gubernur' }
+        };
+
+        let currentUser = null;
+        let skData = [];
+        let dokumenData = [];
+
+        // Inisialisasi aplikasi
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            loadSampleData();
+            document.getElementById('tanggalPengajuan').valueAsDate = new Date();
+            document.getElementById('dokumenTanggal').valueAsDate = new Date();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('burgerBtn').addEventListener('click', toggleSidebar);
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', handleNavClick);
+            });
+            document.getElementById('searchDokumen').addEventListener('input', debounce(handleDokumenSearch, 300));
+            document.getElementById('searchSK').addEventListener('input', debounce(handleSKSearch, 300));
+            
+            // Dokumen form events
+            document.getElementById('addDokumenBtn').addEventListener('click', showDokumenForm);
+            document.getElementById('closeDokumenForm').addEventListener('click', hideDokumenForm);
+            document.getElementById('dokumenForm').addEventListener('submit', handleDokumenSubmit);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.toLowerCase();
+            const password = document.getElementById('password').value;
+
+            if (users[username] && users[username].password === password) {
+                currentUser = users[username];
+                showApp();
+                updateUserInfo();
+                loadAllData();
+            } else {
+                showError('Username atau password tidak valid!');
+            }
+        }
+
+        function showApp() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function handleNavClick(e) {
+            e.preventDefault();
+            const page = e.target.closest('.nav-item').dataset.page;
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            e.target.closest('.nav-item').classList.add('active');
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page).classList.add('active');
+            
+            switch(page) {
+                case 'profile': loadProfile(); break;
+                case 'dokumen': loadDokumen(); break;
+                case 'pengajuan': loadSK(); break;
+                case 'logout': logout(); break;
+            }
+            
+            toggleSidebar();
+        }
+
+        function updateUserInfo() {
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = currentUser.role;
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('welcomeUserName').textContent = currentUser.name;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('id-ID');
+        }
+
+        function loadSampleData() {
+            skData = [
+                {
+                    id: 1,
+                    nomor: 'SK-001/III/2026/HUKUM',
+                    judul: 'Penunjukan Pejabat Eselon III di Biro Hukum',
+                    pemohon: 'Budi Santoso, SH, M.H.',
+                    tanggal: '2026-03-01',
+                    status: 'partial',
+                    approvals: {
+                        pemrakarsa: { approved: true, date: '2026-03-01 10:30' },
+                        'asisten1': { approved: true, date: '2026-03-01 14:15' },
+                        sekda: { approved: false, date: null },
+                        wagub: { approved: false, date: null },
+                        gubernur: { approved: false, date: null }
+                    }
+                },
+                {
+                    id: 2,
+                    nomor: 'SK-002/III/2026/HUKUM',
+                    judul: 'Pemberhentian Sementara Pejabat Administrator',
+                    pemohon: 'Siti Aminah, S.Hum',
+                    tanggal: '2026-03-03',
+                    status: 'approved',
+                    approvals: {
+                        pemrakarsa: { approved: true, date: '2026-03-03 09:15' },
+                        'asisten1': { approved: true, date: '2026-03-03 11:45' },
+                        sekda: { approved: true, date: '2026-03-03 15:20' },
+                        wagub: { approved: true, date: '2026-03-03 17:10' },
+                        gubernur: { approved: true, date: '2026-03-04 09:30' }
+                    }
+                },
+                {
+                    id: 3,
+                    nomor: 'SK-003/III/2026/HUKUM',
+                    judul: 'Pengangkatan Staf Ahli Hukum Pidana',
+                    pemohon: 'Ahmad Yani, SH, M.H.',
+                    tanggal: '2026-03-04',
+                    status: 'pending',
+                    approvals: {
+                        pemrakarsa: { approved: false, date: null },
+                        'asisten1': { approved: false, date: null },
+                        sekda: { approved: false, date: null },
+                        wagub: { approved: false, date: null },
+                        gubernur: { approved: false, date: null }
+                    }
+                }
+            ];
+
+            dokumenData = [
+                { id: 1, nomor: 'SK-LAMA-001/2025/HUKUM', judul: 'Arsip SK Mutasi 2025', tanggal: '2025-12-20', kategori: 'arsip' },
+                { id: 2, nomor: 'SK-LAMA-002/2025/HUKUM', judul: 'Dokumen Pembentukan Tim Hukum', tanggal: '2025-11-15', kategori: 'referensi' }
+            ];
+        }
+
+        function loadAllData() {
+            loadDashboardData();
+            loadProfile();
+        }
+
+        function loadDashboardData() {
+            const total = skData.length;
+            const approved = skData.filter(sk => sk.status === 'approved').length;
+            const pending = skData.filter(sk => sk.status === 'pending').length;
+            const progress = skData.filter(sk => sk.status === 'partial').length;
+            
+            document.getElementById('totalSK').textContent = total;
+            document.getElementById('approvedSK').textContent = approved;
+            document.getElementById('pendingSK').textContent = pending;
+            document.getElementById('progressSK').textContent = progress;
+
+            // Load recent activity
+            loadRecentActivity();
+        }
+
+        function loadRecentActivity() {
+            const pendingSKs = skData.filter(sk => sk.status !== 'approved');
+            const activityItems = document.getElementById('activityItems');
+            
+            if (pendingSKs.length === 0) {
+                activityItems.innerHTML = '<div class="activity-item" style="justify-content: center; color: var(--gray-500);">Semua SK sudah selesai diproses ✅</div>';
+                return;
+            }
+
+            activityItems.innerHTML = pendingSKs.slice(0, 5).map(sk => {
+                const approvals = Object.values(sk.approvals);
+                const pendingApprovals = approvals.filter(a => !a.approved);
+                const nextRole = pendingApprovals[0]?.role || 'Selesai';
+                
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: linear-gradient(135deg, var(--warning), #f59e0b);">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">${sk.nomor}</div>
+                            <div style="color: var(--gray-600); font-size: 0.9rem;">${sk.judul}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 600; color: var(--primary-blue);">${pendingApprovals.length} tahap tersisa</div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">Menunggu ${nextRole}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadProfile() {
+            document.getElementById('profileContent').innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; max-width: 600px;">
+                    <div style="text-align: center; padding: 2rem; background: var(--gray-50); border-radius: 16px;">
+                        <div class="user-avatar" style="width: 100px; height: 100px; font-size: 2.5rem; margin: 0 auto 1rem;">${currentUser.name.charAt(0).toUpperCase()}</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">${currentUser.name}</h3>
+                        <div class="status-badge status-approved" style="font-size: 0.9rem;">Status: Aktif</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; margin-bottom: 1.5rem;">
+                            <div style="width: 120px; font-weight: 600; color: var(--gray-700);">Nama:</div>
+                            <div>${currentUser.name}</div>
+                        </div>
+                        <div style="display: flex; margin-bottom: 1.5rem;">
+                            <div style="width: 120px; font-weight: 600; color: var(--gray-700);">Jabatan:</div>
+                            <div>${currentUser.role}</div>
+                        </div>
+                        <div style="display: flex;">
+                            <div style="width: 120px; font-weight: 600; color: var(--gray-700);">Login Terakhir:</div>
+                            <div>${new Date().toLocaleString('id-ID')}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // IMPROVED DOKUMEN FUNCTIONS
+        function showDokumenForm() {
+            document.getElementById('dokumenFormContainer').style.display = 'block';
+            document.getElementById('dokumenNomor').focus();
+            document.getElementById('addDokumenBtn').style.display = 'none';
+        }
+
+        function hideDokumenForm() {
+            document.getElementById('dokumenFormContainer').style.display = 'none';
+            document.getElementById('dokumenForm').reset();
+            document.getElementById('addDokumenBtn').style.display = 'inline-flex';
+            document.querySelector('.dokumen-form').classList.remove('active');
+        }
+
+        function handleDokumenSubmit(e) {
+            e.preventDefault();
+            const newDokumen = {
+                id: Date.now(),
+                nomor: document.getElementById('dokumenNomor').value,
+                judul: document.getElementById('dokumenJudul').value,
+                tanggal: document.getElementById('dokumenTanggal').value,
+                kategori: document.getElementById('dokumenKategori').value
+            };
+            dokumenData.unshift(newDokumen);
+            hideDokumenForm();
+            loadDokumen();
+            showSuccess('Dokumen berhasil ditambahkan!');
+        }
+
+        function loadDokumen(filteredData = dokumenData) {
+            const tbody = document.getElementById('dokumenTable');
+            tbody.innerHTML = filteredData.map((doc, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td style="font-weight: 600; color: var(--primary-blue);">${doc.nomor}</td>
+                    <td>${doc.judul}</td>
+                    <td>${formatDate(doc.tanggal)}</td>
+                    <td><span class="status-badge status-approved">${doc.kategori.toUpperCase()}</span></td>
+                    <td>
+                        <button class="btn-small btn-primary" onclick="editDokumen(${doc.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-small btn-danger" onclick="deleteDokumen(${doc.id})" style="margin-left: 0.5rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('') || '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--gray-500);">Tidak ada dokumen ditemukan</td></tr>';
+        }
+
+        function loadSK(filteredData = skData) {
+            const tbody = document.getElementById('skTable');
+            tbody.innerHTML = filteredData.map((sk, index) => {
+                const approvedCount = Object.values(sk.approvals).filter(a => a.approved).length;
+                const statusClass = sk.status === 'approved' ? 'status-approved' : 
+                                  approvedCount > 0 ? 'status-partial' : 'status-pending';
+                const statusText = sk.status === 'approved' ? 'APPROVED' : 
+                                  approvedCount > 0 ? `${approvedCount}/5 DIPARAF` : 'PENDING';
+
+                return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td style="font-weight: 600; color: var(--primary-blue);">${sk.nomor}</td>
+                    <td>${sk.judul}</td>
+                    <td><strong>${sk.pemohon}</strong></td>
+                    <td>${formatDate(sk.tanggal)}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn-small btn-primary" onclick="showDetail(${sk.id})" style="font-weight: 600;">
+                            <i class="fas fa-eye"></i> Paraf SK
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('') || '<tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--gray-500);">Tidak ada SK ditemukan</td></tr>';
+        }
+
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        function showPengajuanForm() {
+            document.getElementById('pengajuanForm').style.display = 'block';
+            document.getElementById('nomorSurat').focus();
+        }
+
+        function hidePengajuanForm() {
+            document.getElementById('pengajuanForm').style.display = 'none';
+            document.getElementById('skForm').reset();
+            document.getElementById('tanggalPengajuan').valueAsDate = new Date();
+        }
+
+        document.getElementById('skForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newSK = {
+                id: Date.now(),
+                nomor: document.getElementById('nomorSurat').value,
+                judul: document.getElementById('judulSurat').value,
+                pemohon: document.getElementById('pemohon').value,
+                tanggal: document.getElementById('tanggalPengajuan').value,
+                status: 'pending',
+                approvals: {
+                    pemrakarsa: { approved: false, date: null },
+                    'asisten1': { approved: false, date: null },
+                    sekda: { approved: false, date: null },
+                    wagub: { approved: false, date: null },
+                    gubernur: { approved: false, date: null }
+                }
+            };
+            skData.unshift(newSK);
+            hidePengajuanForm();
+            loadSK();
+            loadDashboardData();
+            showSuccess('Pengajuan SK baru berhasil disimpan!');
+        });
+
+        function showDetail(skId) {
+            const sk = skData.find(s => s.id === skId);
+            if (!sk) return;
+
+            const approvalRoles = ['pemrakarsa', 'asisten1', 'sekda', 'wagub', 'gubernur'];
+            const currentUserRole = currentUser.role.toLowerCase().replace(' ', '');
+
+            document.getElementById('modalTitle').textContent = `${sk.nomor}`;
+            document.getElementById('modalBody').innerHTML = `
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--gray-800);">Detail Pengajuan</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div><strong>Judul:</strong> ${sk.judul}</div>
+                        <div><strong>Pemohon:</strong> ${sk.pemohon}</div>
+                        <div><strong>Tanggal:</strong> ${formatDate(sk.tanggal)}</div>
+                        <div><strong>Status:</strong> <span class="status-badge ${sk.status === 'approved' ? 'status-approved' : 'status-partial'}">${sk.status.toUpperCase()}</span></div>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-weight: 600; margin-bottom: 1.5rem; color: var(--gray-800);">Status Paraf</h4>
+                    <div class="approval-grid">
+                        ${approvalRoles.map(role => {
+                            const approval = sk.approvals[role];
+                            const isCurrentUser = role === currentUserRole;
+                            
+                            return `
+                            <div class="approval-item ${approval.approved ? 'approved' : ''}">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <input type="checkbox" class="approval-checkbox" 
+                                           ${approval.approved ? 'checked disabled' : (isCurrentUser ? '' : 'disabled')}
+                                           ${isCurrentUser && !approval.approved ? `onchange="updateApproval(${sk.id}, '${role}')"` : 'disabled'}>
+                                    <div class="approval-role">${role.charAt(0).toUpperCase() + role.slice(1).replace('1', ' 1')}</div>
+                                </div>
+                                ${approval.date ? `<div class="approval-date">${approval.date}</div>` : ''}
+                            </div>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function updateApproval(skId, role) {
+            const sk = skData.find(s => s.id === skId);
+            if (sk && currentUser.role.toLowerCase().replace(' ', '') === role && !sk.approvals[role].approved) {
+                sk.approvals[role].approved = true;
+                sk.approvals[role].date = new Date().toLocaleString('id-ID');
+                
+                const approvedCount = Object.values(sk.approvals).filter(a => a.approved).length;
+                sk.status = approvedCount === 5 ? 'approved' : (approvedCount > 0 ? 'partial' : 'pending');
+                
+                loadSK();
+                loadDashboardData();
+                showSuccess(`SK berhasil diparaf oleh ${currentUser.role}!`);
+                closeModal();
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        function handleDokumenSearch(e) {
+            const term = e.target.value.toLowerCase();
+            const filtered = dokumenData.filter(doc => 
+                doc.nomor.toLowerCase().includes(term) || doc.judul.toLowerCase().includes(term)
+            );
+            loadDokumen(filtered);
+        }
+
+        function handleSKSearch(e) {
+            const term = e.target.value.toLowerCase();
+            const filtered = skData.filter(sk => 
+                sk.nomor.toLowerCase().includes(term) || 
+                sk.judul.toLowerCase().includes(term) ||
+                sk.pemohon.toLowerCase().includes(term)
+            );
+            loadSK(filtered);
+        }
+
+        function showSuccess(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; background: var(--success); 
+                color: white; padding: 1rem 1.5rem; border-radius: 12px; 
+                box-shadow: var(--shadow-lg); z-index: 3000; font-weight: 500;
+                transform: translateX(400px); transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function showError(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; background: var(--danger); 
+                color: white; padding: 1rem 1.5rem; border-radius: 12px; 
+                box-shadow: var(--shadow-lg); z-index: 3000; font-weight: 500;
+                transform: translateX(400px); transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+                currentUser = null;
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('appContainer').style.display = 'none';
+                document.getElementById('loginForm').reset();
+            }
+        }
+
+        // Expose functions globally
+        window.loadDokumen = loadDokumen;
+        window.loadSK = loadSK;
+        window.showDetail = showDetail;
+        window.closeModal = closeModal;
+        window.showPengajuanForm = showPengajuanForm;
+        window.hidePengajuanForm = hidePengajuanForm;
+        window.editDokumen = function(id) { alert('Fitur edit akan segera tersedia'); };
+        window.deleteDokumen = function(id) { 
+            if (confirm('Hapus dokumen ini?')) {
+                dokumenData = dokumenData.filter(d => d.id !== id);
+                loadDokumen();
+                showSuccess('Dokumen berhasil dihapus');
+            }
+        };
+        window.updateApproval = updateApproval;
+    </script>
+</body>
+</html>
